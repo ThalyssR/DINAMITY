@@ -1,0 +1,1 @@
+tamanho original = resolução atual ÷ tamanho do “pixel gigante”
