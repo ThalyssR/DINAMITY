@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bwv21v20diiet"]
+
+[ext_resource type="SpriteFrames" uid="uid://buepd3v7w6b17" path="res://Items/animação/Animacao_Foice.tres" id="1_32hhx"]
+[ext_resource type="Texture2D" uid="uid://d3dxbrnvpe52r" path="res://Sprites/weapon/foice/foice1.png" id="2_32hhx"]
+[ext_resource type="Script" uid="uid://cwitc0i63r276" path="res://Scripts/ItemData.cs" id="3_b7v0w"]
+
+[resource]
+script = ExtResource("3_b7v0w")
+Nome = "Foice "
+Icone = ExtResource("2_32hhx")
+EscalaGuardada = Vector2(2, 2)
+AnimacaoAtaque = ExtResource("1_32hhx")
+EscalaAtaque = Vector2(3.167, 2.338)
+metadata/_custom_type_script = "uid://cwitc0i63r276"

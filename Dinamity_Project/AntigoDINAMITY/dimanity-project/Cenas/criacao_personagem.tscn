@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dqqct5l86nm5u"]
+
+[ext_resource type="Script" uid="uid://blgw6aj81w66g" path="res://Cenas/criacao_personagem.gd" id="1_w7bta"]
+[ext_resource type="Texture2D" uid="uid://cfjyjuas57o4a" path="res://icon.svg" id="2_52clt"]
+[ext_resource type="Texture2D" uid="uid://pkx51ge3sm54" path="res://paisagem/menuvazio2.png" id="2_k5n3q"]
+[ext_resource type="Texture2D" uid="uid://dvkp4skjxrba2" path="res://paisagem/logo2.png" id="3_mxjfj"]
+
+[node name="CriacaoPersonagem" type="Control" unique_id=2128187638]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w7bta")
+
+[node name="Background" type="TextureRect" parent="." unique_id=937770890]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_k5n3q")
+expand_mode = 1
+
+[node name="Logo" type="TextureRect" parent="Background" unique_id=1399134452]
+layout_mode = 0
+offset_left = -7.0
+offset_top = -140.0
+offset_right = 1815.0
+offset_bottom = 675.0
+texture = ExtResource("3_mxjfj")
+expand_mode = 1
+
+[node name="Manequim" type="Node2D" parent="." unique_id=1738831603]
+
+[node name="Corpo" type="Sprite2D" parent="Manequim" unique_id=245204528]
+position = Vector2(252.00003, 614)
+scale = Vector2(1.9296875, 2.015625)
+texture = ExtResource("2_52clt")
+
+[node name="Cabelo" type="Sprite2D" parent="Manequim" unique_id=806113079]
+position = Vector2(1619, 598)
+scale = Vector2(2.136719, 2.2109375)
+texture = ExtResource("2_52clt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1757683066]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 572.0
+offset_top = 513.0
+offset_right = 929.5
+offset_bottom = 617.5
+scale = Vector2(2, 2)
+
+[node name="BotaoCabelo" type="Button" parent="VBoxContainer" unique_id=1249155158]
+layout_mode = 2
+text = "Mudar Cor do Cabelo"
+
+[node name="BotaoComecar" type="Button" parent="VBoxContainer" unique_id=101174777]
+layout_mode = 2
+text = "Começar
+"

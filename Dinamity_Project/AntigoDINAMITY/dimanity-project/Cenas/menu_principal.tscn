@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://rf4qnghxvv6d"]
+
+[ext_resource type="Script" uid="uid://c3n3l1lg3fnmn" path="res://Cenas/menu_principal.gd" id="1_5jrt5"]
+[ext_resource type="Texture2D" uid="uid://cg8qwjhi1jyw7" path="res://paisagem/menu2.png" id="2_qa2y2"]
+[ext_resource type="Texture2D" uid="uid://dql3iulbscmef" path="res://paisagem/name2.png" id="3_7f1x0"]
+
+[node name="MenuPrincipal" type="Control" unique_id=1092915179]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5jrt5")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1321663422]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_qa2y2")
+expand_mode = 1
+
+[node name="Logo" type="TextureRect" parent="." unique_id=1478472619]
+layout_mode = 0
+offset_left = -177.0
+offset_top = 174.0
+offset_right = 1004.0
+offset_bottom = 727.0
+texture = ExtResource("3_7f1x0")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1779790189]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 260.0
+offset_right = 438.0
+offset_bottom = 684.0
+scale = Vector2(2, 2)
+alignment = 1
+
+[node name="BotaoComecar" type="Button" parent="VBoxContainer" unique_id=2095530435]
+layout_mode = 2
+text = "Começar Jogo
+"
+
+[node name="BotaoMultiplayer" type="Button" parent="VBoxContainer" unique_id=1927123586]
+layout_mode = 2
+text = "Multiplayer
+"
+
+[node name="BotaoOpcoes" type="Button" parent="VBoxContainer" unique_id=652077932]
+layout_mode = 2
+text = "Opções
+"
+
+[node name="BotaoSair" type="Button" parent="VBoxContainer" unique_id=1383381642]
+layout_mode = 2
+text = "Sair
+"

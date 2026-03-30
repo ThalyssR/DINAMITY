@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://bv6cm5i1podmb"]
+
+[ext_resource type="PackedScene" uid="uid://bldmn57poenvn" path="res://Scenes/player.tscn" id="1_gqidu"]
+[ext_resource type="Texture2D" uid="uid://dnobo22ldw2u0" path="res://fundo.png" id="4_glouy"]
+[ext_resource type="PackedScene" uid="uid://ban0pg47m4g3i" path="res://Scenes/menu_inventario.tscn" id="5_yf8a8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gqidu"]
+size = Vector2(1773, 89)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_glouy"]
+size = Vector2(710.5, 38.5)
+
+[node name="Mundo" type="Node2D" unique_id=867257123]
+position = Vector2(-260, -81)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=1470137582]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=568484732]
+scale = Vector2(23.564917, 43.715946)
+motion_scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer" unique_id=1970357719]
+scale = Vector2(38.743736, 5.3107133)
+texture = ExtResource("4_glouy")
+region_enabled = true
+region_rect = Rect2(4000, 0, 4000, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1604911276]
+
+[node name="MenuInventario" parent="CanvasLayer" unique_id=2132717616 instance=ExtResource("5_yf8a8")]
+
+[node name="Player" parent="." unique_id=2044835570 instance=ExtResource("1_gqidu")]
+position = Vector2(1194, 470)
+collision_layer = 4
+collision_mask = 3
+
+[node name="Chao_Solido" type="StaticBody2D" parent="." unique_id=1929406402]
+
+[node name="ColorRect" type="ColorRect" parent="Chao_Solido" unique_id=1243502926]
+offset_top = -1132.0
+offset_right = 1807.0
+offset_bottom = 107.0
+color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Chao_Solido" unique_id=374154412]
+offset_left = -1547.0
+offset_top = -1182.0
+offset_right = 260.0
+offset_bottom = 1205.0
+color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="Chao_Solido" unique_id=1409977782]
+offset_left = -1531.0
+offset_top = 738.0
+offset_right = 3548.0
+offset_bottom = 3125.0
+color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="Chao_Solido" unique_id=1489457416]
+offset_left = 1423.0
+offset_top = 429.0
+offset_right = 6502.0
+offset_bottom = 2816.0
+color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chao_Solido" unique_id=333405355]
+position = Vector2(963.5, 783)
+shape = SubResource("RectangleShape2D_gqidu")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Chao_Solido" unique_id=1941591762]
+position = Vector2(2116.0002, 1504)
+scale = Vector2(0.7814342, 24.162485)
+shape = SubResource("RectangleShape2D_gqidu")
+
+[node name="Plataforma_Voadora" type="StaticBody2D" parent="." unique_id=1576538131]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plataforma_Voadora" unique_id=57917749]
+position = Vector2(656, 536)
+shape = SubResource("RectangleShape2D_glouy")
+one_way_collision = true
+debug_color = Color(0.08069079, 0.057455145, 0.30253267, 0.41960785)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Plataforma_Voadora" unique_id=105613656]
+position = Vector2(1778, 449.25)
+shape = SubResource("RectangleShape2D_glouy")
+one_way_collision = true
+debug_color = Color(0.08069079, 0.057455145, 0.30253267, 0.41960785)

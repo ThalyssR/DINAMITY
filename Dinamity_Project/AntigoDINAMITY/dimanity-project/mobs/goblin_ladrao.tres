@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DadosMob" format=3 uid="uid://d1fl8r14gbp2e"]
+
+[ext_resource type="Script" uid="uid://byvsf13uqfxa4" path="res://drop_item.gd" id="1_8u1d2"]
+[ext_resource type="Resource" uid="uid://dwprhr5xs52ad" path="res://Itens_Base/espada_de_fogo.tres" id="2_2n64y"]
+[ext_resource type="Script" uid="uid://ddm1lgk6uur7a" path="res://dados_mob.gd" id="2_byoyj"]
+
+[sub_resource type="Resource" id="Resource_wsg8a"]
+script = ExtResource("1_8u1d2")
+item = ExtResource("2_2n64y")
+chance_drop = 5.0
+metadata/_custom_type_script = "uid://byvsf13uqfxa4"
+
+[resource]
+script = ExtResource("2_byoyj")
+itens_dropaveis = Array[ExtResource("1_8u1d2")]([SubResource("Resource_wsg8a")])
+metadata/_custom_type_script = "uid://ddm1lgk6uur7a"

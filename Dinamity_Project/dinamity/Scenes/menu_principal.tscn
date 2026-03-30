@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://sexr5mlu4tyt"]
+
+[ext_resource type="Script" uid="uid://clscpgc70u5af" path="res://Scripts/MenuPrincipal.cs" id="1_crked"]
+[ext_resource type="Texture2D" uid="uid://b16yrtogbml7i" path="res://Paisagem/name3.png" id="2_y4xp8"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xe6lt"]
+load_path = "res://.godot/imported/menu2.png-0776864faa5edec352d29a1e2d02f1a0.ctex"
+
+[node name="MenuPrincipal" type="Control" unique_id=115171735]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1616.0
+offset_bottom = 883.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_crked")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=248577653]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 643.0
+texture = SubResource("CompressedTexture2D_xe6lt")
+expand_mode = 1
+
+[node name="Logo" type="TextureRect" parent="." unique_id=1293686110]
+layout_mode = 0
+offset_left = -115.0
+offset_top = 62.0
+offset_right = 673.0
+offset_bottom = 492.0
+texture = ExtResource("2_y4xp8")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1995209696]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 186.0
+offset_right = 480.0
+offset_bottom = 652.0
+alignment = 1
+
+[node name="BtnJogar" type="Button" parent="VBoxContainer" unique_id=1383469462]
+layout_mode = 2
+text = "JOGAR"
+
+[node name="BtnOpções" type="Button" parent="VBoxContainer" unique_id=1666693744]
+layout_mode = 2
+text = "OPÇÕES"
+
+[node name="BtnSair" type="Button" parent="VBoxContainer" unique_id=1728825190]
+layout_mode = 2
+text = "SAIR
+"

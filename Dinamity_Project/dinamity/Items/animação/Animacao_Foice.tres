@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://buepd3v7w6b17"]
+
+[ext_resource type="Texture2D" uid="uid://v6s825dgcboo" path="res://Sprites/weapon/foice/foice2.png" id="1_3b2hm"]
+[ext_resource type="Texture2D" uid="uid://cudyk1vy4nenn" path="res://Sprites/weapon/foice/foice3.png" id="2_57s4g"]
+[ext_resource type="Texture2D" uid="uid://ct5jmvrdvt1d5" path="res://Sprites/weapon/foice/foice4.png" id="3_txa8y"]
+[ext_resource type="Texture2D" uid="uid://bmvaodi5r53y3" path="res://Sprites/weapon/foice/foice5.png" id="4_tuo8b"]
+[ext_resource type="Texture2D" uid="uid://vup73qd1sma2" path="res://Sprites/weapon/foice/foice6.png" id="5_s3ccq"]
+[ext_resource type="Texture2D" uid="uid://6wuk5jt1kp0m" path="res://Sprites/weapon/foice/foice7.png" id="6_5h3po"]
+[ext_resource type="Texture2D" uid="uid://bspuba040klxt" path="res://Sprites/weapon/foice/foice8.png" id="7_j68tg"]
+[ext_resource type="Texture2D" uid="uid://dfy5yvbfiss7h" path="res://Sprites/weapon/foice/foice9.png" id="8_x3r6l"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3b2hm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_57s4g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_txa8y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_tuo8b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_s3ccq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_5h3po")
+}, {
+"duration": 1.8,
+"texture": ExtResource("7_j68tg")
+}, {
+"duration": 0.8,
+"texture": ExtResource("8_x3r6l")
+}],
+"loop": false,
+"name": &"ataque",
+"speed": 21.0
+}]

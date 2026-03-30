@@ -1,0 +1,194 @@
+[gd_scene format=3 uid="uid://ban0pg47m4g3i"]
+
+[ext_resource type="Script" uid="uid://7xq6dxy7pbqr" path="res://Scripts/MenuInventario.cs" id="1_fb4w1"]
+[ext_resource type="Texture2D" uid="uid://ca18e1nuifby7" path="res://Sprites/hud/Inventory_Example_03.png" id="2_6llgh"]
+[ext_resource type="Resource" uid="uid://bwv21v20diiet" path="res://Items/Foice.tres" id="2_lrbs7"]
+[ext_resource type="Texture2D" uid="uid://covm1qbw16h7v" path="res://Sprites/hud/Inventory_Slot_2.png" id="3_lrbs7"]
+[ext_resource type="Texture2D" uid="uid://28f8f2glaifk" path="res://Sprites/hud/Inventory_Slot_3.png" id="4_qciuf"]
+[ext_resource type="Texture2D" uid="uid://dxco7xm5iih6t" path="res://Sprites/hud/Inventory_Slot_4.png" id="5_ip0rj"]
+[ext_resource type="Script" uid="uid://xfhqd2morns7" path="res://Scripts/SlotUI.cs" id="5_lrbs7"]
+[ext_resource type="Texture2D" uid="uid://d20fl1uxkjlhj" path="res://Sprites/hud/Inventory_Slot_5.png" id="6_padkc"]
+[ext_resource type="Texture2D" uid="uid://6xh3y4v2atie" path="res://Sprites/hud/Inventory_Slot_8.png" id="7_8x2jl"]
+[ext_resource type="Texture2D" uid="uid://bv3rql4trrw80" path="res://Sprites/hud/Inventory_Slot_9.png" id="8_jcntp"]
+[ext_resource type="Texture2D" uid="uid://c5xlf2p04vcfd" path="res://Sprites/hud/Inventory_Slot_10.png" id="9_c26p3"]
+
+[node name="MenuInventario" type="Control" unique_id=2132717616]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fb4w1")
+
+[node name="FundoEscuro" type="ColorRect" parent="." unique_id=1390361219]
+layout_mode = 0
+offset_right = 492.0
+offset_bottom = 649.0
+color = Color(0, 0, 0, 0.4627451)
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=982235014]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 307.0
+offset_right = 326.0
+offset_bottom = 571.0
+texture = ExtResource("2_6llgh")
+
+[node name="SlotMao1" type="TextureRect" parent="Fundo" unique_id=1532188483]
+layout_mode = 0
+offset_left = 56.0
+offset_top = -94.0
+offset_right = 127.0
+offset_bottom = -21.0
+texture = ExtResource("3_lrbs7")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 4
+
+[node name="SlotMao2" type="TextureRect" parent="Fundo" unique_id=684651148]
+layout_mode = 0
+offset_left = 138.0
+offset_top = -94.0
+offset_right = 209.0
+offset_bottom = -21.0
+texture = ExtResource("4_qciuf")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 5
+
+[node name="SlotCapacete" type="TextureRect" parent="Fundo" unique_id=1234965013]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 1.0
+offset_right = 369.0
+offset_bottom = 74.0
+texture = ExtResource("5_ip0rj")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 1
+
+[node name="SlotPeitoral" type="TextureRect" parent="Fundo" unique_id=395630889]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 93.0
+offset_right = 369.0
+offset_bottom = 166.0
+texture = ExtResource("6_padkc")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 2
+
+[node name="SlotBotas" type="TextureRect" parent="Fundo" unique_id=1803520701]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 180.0
+offset_right = 369.0
+offset_bottom = 253.0
+texture = ExtResource("7_8x2jl")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 3
+
+[node name="SlotAmuleto1" type="TextureRect" parent="Fundo" unique_id=1369849275]
+layout_mode = 0
+offset_left = 23.0
+offset_top = -180.0
+offset_right = 94.0
+offset_bottom = -107.0
+texture = ExtResource("8_jcntp")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 6
+
+[node name="SlotAmuleto2" type="TextureRect" parent="Fundo" unique_id=182235497]
+layout_mode = 0
+offset_left = 187.0
+offset_top = -180.0
+offset_right = 258.0
+offset_bottom = -107.0
+texture = ExtResource("9_c26p3")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+SlotMapeado = 7
+
+[node name="GridContainer" type="GridContainer" parent="Fundo" unique_id=202793696]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 240.0
+offset_bottom = 240.0
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="Slot1" type="TextureRect" parent="Fundo/GridContainer" unique_id=1241094091]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+ItemAtual = ExtResource("2_lrbs7")
+
+[node name="Slot2" type="TextureRect" parent="Fundo/GridContainer" unique_id=45622807]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot3" type="TextureRect" parent="Fundo/GridContainer" unique_id=98986311]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot4" type="TextureRect" parent="Fundo/GridContainer" unique_id=546806699]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot5" type="TextureRect" parent="Fundo/GridContainer" unique_id=1199127829]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot6" type="TextureRect" parent="Fundo/GridContainer" unique_id=1281364468]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot7" type="TextureRect" parent="Fundo/GridContainer" unique_id=960810423]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot8" type="TextureRect" parent="Fundo/GridContainer" unique_id=1406174313]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
+
+[node name="Slot9" type="TextureRect" parent="Fundo/GridContainer" unique_id=905104494]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_lrbs7")
