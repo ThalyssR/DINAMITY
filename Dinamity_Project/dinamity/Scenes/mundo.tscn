@@ -1,14 +1,80 @@
-[gd_scene format=3 uid="uid://bv6cm5i1podmb"]
+[gd_scene format=4 uid="uid://bv6cm5i1podmb"]
 
 [ext_resource type="PackedScene" uid="uid://bldmn57poenvn" path="res://Scenes/player.tscn" id="1_gqidu"]
 [ext_resource type="Texture2D" uid="uid://dnobo22ldw2u0" path="res://fundo.png" id="4_glouy"]
+[ext_resource type="Texture2D" uid="uid://cg5xtg1n8t2of" path="res://Sprites/tiles/tilesbythalyss.png" id="4_yf8a8"]
 [ext_resource type="PackedScene" uid="uid://ban0pg47m4g3i" path="res://Scenes/menu_inventario.tscn" id="5_yf8a8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gqidu"]
-size = Vector2(1773, 89)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yf8a8"]
+size = Vector2(1188.5, 170.93231)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ibak7"]
+size = Vector2(1191, 90.36461)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7j6if"]
+size = Vector2(1774.6106, 2.56596)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qxsm7"]
+size = Vector2(64.5, 645)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_has1v"]
+size = Vector2(152.57104, 0.5652371)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m1vgi"]
+size = Vector2(1160.5, 90.36461)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_glouy"]
-size = Vector2(710.5, 38.5)
+size = Vector2(61.25, 38.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i8avv"]
+size = Vector2(717, 25)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ibak7"]
+texture = ExtResource("4_yf8a8")
+0:0/0 = 0
+1:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+8:1/0 = 0
+6:2/0 = 0
+8:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+0:4/next_alternative_id = 4
+0:4/0 = 0
+1:4/next_alternative_id = 3
+1:4/0 = 0
+2:4/next_alternative_id = 3
+2:4/0 = 0
+3:4/next_alternative_id = 3
+3:4/0 = 0
+4:4/next_alternative_id = 3
+4:4/0 = 0
+5:4/next_alternative_id = 3
+5:4/0 = 0
+6:4/next_alternative_id = 3
+6:4/0 = 0
+7:4/next_alternative_id = 3
+7:4/0 = 0
+8:4/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_i8avv"]
+physics_layer_0/collision_layer = 1
+sources/10 = SubResource("TileSetAtlasSource_ibak7")
 
 [node name="Mundo" type="Node2D" unique_id=867257123]
 position = Vector2(-260, -81)
@@ -32,57 +98,93 @@ region_rect = Rect2(4000, 0, 4000, 0)
 [node name="Player" parent="." unique_id=2044835570 instance=ExtResource("1_gqidu")]
 position = Vector2(1194, 470)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 5
 
 [node name="Chao_Solido" type="StaticBody2D" parent="." unique_id=1929406402]
 
+[node name="ColorRect5" type="ColorRect" parent="Chao_Solido" unique_id=293020047]
+offset_left = 1254.0
+offset_top = -1263.0
+offset_right = 2652.0
+offset_bottom = -24.0
+color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+
 [node name="ColorRect" type="ColorRect" parent="Chao_Solido" unique_id=1243502926]
 offset_top = -1132.0
-offset_right = 1807.0
+offset_right = 1398.0
 offset_bottom = 107.0
-color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+color = Color(0.04373832, 0.014767375, 0.0005894457, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="Chao_Solido" unique_id=374154412]
 offset_left = -1547.0
 offset_top = -1182.0
 offset_right = 260.0
 offset_bottom = 1205.0
-color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+color = Color(0.04373832, 0.014767375, 0.0005894457, 1)
 
 [node name="ColorRect3" type="ColorRect" parent="Chao_Solido" unique_id=1409977782]
-offset_left = -1531.0
-offset_top = 738.0
-offset_right = 3548.0
-offset_bottom = 3125.0
-color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+offset_left = -1535.0
+offset_top = 687.0
+offset_right = 3544.0
+offset_bottom = 3074.0
+color = Color(0.04373832, 0.014767375, 0.0005894457, 1)
 
 [node name="ColorRect4" type="ColorRect" parent="Chao_Solido" unique_id=1489457416]
 offset_left = 1423.0
 offset_top = 429.0
 offset_right = 6502.0
 offset_bottom = 2816.0
-color = Color(0.02169458, 1.565528e-05, 0.050382808, 1)
+color = Color(0.04373832, 0.014767375, 0.0005894457, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chao_Solido" unique_id=333405355]
-position = Vector2(963.5, 783)
-shape = SubResource("RectangleShape2D_gqidu")
+[node name="Parede" type="CollisionShape2D" parent="Chao_Solido" unique_id=1545003308]
+position = Vector2(823.25, 53.466152)
+shape = SubResource("RectangleShape2D_yf8a8")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Chao_Solido" unique_id=1941591762]
-position = Vector2(2116.0002, 1504)
+[node name="Parede2" type="CollisionShape2D" parent="Chao_Solido" unique_id=333405355]
+position = Vector2(827.5, 705.75)
+shape = SubResource("RectangleShape2D_ibak7")
+
+[node name="Parede3" type="CollisionShape2D" parent="Chao_Solido" unique_id=1941591762]
+position = Vector2(2078.3706, 459.99997)
 scale = Vector2(0.7814342, 24.162485)
-shape = SubResource("RectangleShape2D_gqidu")
+shape = SubResource("RectangleShape2D_7j6if")
 
-[node name="Plataforma_Voadora" type="StaticBody2D" parent="." unique_id=1576538131]
-collision_layer = 2
+[node name="Parede4" type="CollisionShape2D" parent="Chao_Solido" unique_id=420426202]
+position = Vector2(262.25, 370.5)
+shape = SubResource("RectangleShape2D_qxsm7")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plataforma_Voadora" unique_id=57917749]
-position = Vector2(656, 536)
+[node name="Parede5" type="CollisionShape2D" parent="Chao_Solido" unique_id=306768762]
+position = Vector2(1431.583, 586)
+scale = Vector2(0.6106394, 583.8257)
+shape = SubResource("RectangleShape2D_has1v")
+
+[node name="Parede6" type="CollisionShape2D" parent="Chao_Solido" unique_id=2003202264]
+position = Vector2(1946, -62)
+shape = SubResource("RectangleShape2D_m1vgi")
+
+[node name="Plataformas_Mapa" type="Node2D" parent="." unique_id=1122281276]
+
+[node name="Plataforma_Voadora" type="StaticBody2D" parent="Plataformas_Mapa" unique_id=1576538131]
+collision_layer = 4
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Plataformas_Mapa/Plataforma_Voadora" unique_id=105613656]
+position = Vector2(1415.375, 448)
 shape = SubResource("RectangleShape2D_glouy")
 one_way_collision = true
 debug_color = Color(0.08069079, 0.057455145, 0.30253267, 0.41960785)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Plataforma_Voadora" unique_id=105613656]
-position = Vector2(1778, 449.25)
-shape = SubResource("RectangleShape2D_glouy")
+[node name="PontoQuina" type="Marker2D" parent="Plataformas_Mapa/Plataforma_Voadora/CollisionShape2D2" unique_id=44332432]
+position = Vector2(-30.375, -73)
+
+[node name="Plataforma_Voadora2" type="StaticBody2D" parent="Plataformas_Mapa" unique_id=134746945]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plataformas_Mapa/Plataforma_Voadora2" unique_id=925642333]
+position = Vector2(1880.5, 273.5)
+shape = SubResource("RectangleShape2D_i8avv")
 one_way_collision = true
-debug_color = Color(0.08069079, 0.057455145, 0.30253267, 0.41960785)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2123813860]
+scale = Vector2(5, 5)
+tile_map_data = PackedByteArray("AAADAAgACgAAAAEAAAAEAAgACgABAAQAAAAFAAgACgADAAQAAAAGAAgACgAHAAQAAAAHAAgACgABAAQAAAAIAAgACgAFAAQAAAAJAAgACgAEAAQAAAAKAAgACgAAAAQAAAALAAgACgAGAAQAAAAMAAgACgAFAAQAAAANAAgACgACAAQAAAAOAAgACgAEAAQAAAAPAAgACgACAAQAAAAQAAgACgADAAQAAAARAAgACgAIAAQAAAADAAEACgAAAAAAAAARAAEACgAFAAEAAAAQAAEACgAEAAMAAAAPAAEACgAAAAMAAAAOAAEACgABAAMAAAANAAEACgACAAMAAAAMAAEACgAGAAMAAAALAAEACgAGAAMAAAAKAAEACgAEAAMAAAAJAAEACgABAAMAAAAIAAEACgAFAAMAAAAHAAEACgADAAMAAAAGAAEACgAFAAMAAAAFAAEACgAGAAMAAAAEAAEACgAGAAMAAAADAAIACgAGAAEAAAADAAMACgAGAAAAAAADAAQACgAGAAEAAAADAAUACgAGAAIAAAADAAYACgAGAAEAAAADAAcACgAGAAEAAAARAAcACgAIAAMAAAARAAYACgAIAAEAAAARAAUACgAIAAAAAAATAAMACgACAAQAAAAUAAMACgAAAAQAAAAVAAMACgAHAAQAAAAWAAMACgAAAAQAAAAXAAMACgAEAAQAAAAYAAMACgAAAAQAAAAZAAMACgAGAAQAAAAaAAMACgAFAAQAAAAbAAMACgAFAAQAAAARAAAACgAGAAAAAAARAP//CgAAAAAAAAASAP//CgADAAMAAAATAP//CgACAAMAAAAUAP//CgAAAAMAAAAVAP//CgAGAAMAAAAWAP//CgAGAAMAAAAXAP//CgAFAAMAAAAYAP//CgABAAMAAAAZAP//CgABAAMAAAAaAP//CgAEAAMAAAAbAP//CgAGAAMAAAAcAP//CgADAAMAAAASAAUACgACAAQAAAATAAUACgAHAAQAAAAUAAUACgAGAAQAAAAVAAUACgACAAQAAAAWAAUACgAFAAQAAAAXAAUACgAGAAQAAAAYAAUACgAFAAQAAAAZAAUACgAEAAQAAAAaAAUACgAGAAQAAAAbAAUACgAGAAQAAAAcAAUACgAEAAQAAAAdAAUACgAFAAQAAAAeAAUACgAAAAQAAAAfAAUACgADAAQAAAAgAAUACgACAAQAAAAhAAUACgABAAQAAAAiAAUACgADAAQAAAA=")
+tile_set = SubResource("TileSet_i8avv")

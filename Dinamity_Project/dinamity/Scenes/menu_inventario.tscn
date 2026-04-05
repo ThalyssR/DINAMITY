@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://7xq6dxy7pbqr" path="res://Scripts/MenuInventario.cs" id="1_fb4w1"]
 [ext_resource type="Texture2D" uid="uid://ca18e1nuifby7" path="res://Sprites/hud/Inventory_Example_03.png" id="2_6llgh"]
-[ext_resource type="Resource" uid="uid://bwv21v20diiet" path="res://Items/Foice.tres" id="2_lrbs7"]
 [ext_resource type="Texture2D" uid="uid://covm1qbw16h7v" path="res://Sprites/hud/Inventory_Slot_2.png" id="3_lrbs7"]
 [ext_resource type="Texture2D" uid="uid://28f8f2glaifk" path="res://Sprites/hud/Inventory_Slot_3.png" id="4_qciuf"]
 [ext_resource type="Texture2D" uid="uid://dxco7xm5iih6t" path="res://Sprites/hud/Inventory_Slot_4.png" id="5_ip0rj"]
@@ -11,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://6xh3y4v2atie" path="res://Sprites/hud/Inventory_Slot_8.png" id="7_8x2jl"]
 [ext_resource type="Texture2D" uid="uid://bv3rql4trrw80" path="res://Sprites/hud/Inventory_Slot_9.png" id="8_jcntp"]
 [ext_resource type="Texture2D" uid="uid://c5xlf2p04vcfd" path="res://Sprites/hud/Inventory_Slot_10.png" id="9_c26p3"]
+[ext_resource type="Resource" uid="uid://descug0k2b1i7" path="res://Items/miancyr.tres" id="11_lrbs7"]
 
 [node name="MenuInventario" type="Control" unique_id=2132717616]
 layout_mode = 3
@@ -135,7 +135,7 @@ layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("5_lrbs7")
-ItemAtual = ExtResource("2_lrbs7")
+ItemAtual = ExtResource("11_lrbs7")
 
 [node name="Slot2" type="TextureRect" parent="Fundo/GridContainer" unique_id=45622807]
 custom_minimum_size = Vector2(64, 64)

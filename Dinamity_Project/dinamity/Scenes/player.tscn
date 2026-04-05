@@ -28,10 +28,10 @@
 [ext_resource type="Texture2D" uid="uid://dvqkdv1e37dnd" path="res://Sprites/run7.png" id="19_qpa8y"]
 [ext_resource type="Texture2D" uid="uid://cgbnx15hrhw0s" path="res://Sprites/run8.png" id="20_sbwqj"]
 [ext_resource type="Texture2D" uid="uid://dwj0l0uar5jhk" path="res://Sprites/wall1.png" id="21_xwi16"]
-[ext_resource type="SpriteFrames" uid="uid://buepd3v7w6b17" path="res://Items/animação/Animacao_Foice.tres" id="23_2ijsl"]
+[ext_resource type="Texture2D" uid="uid://cfo7qm4du5jrf" path="res://Sprites/mao.png" id="29_83xs0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgqql"]
-size = Vector2(100, 88.80321)
+size = Vector2(100, 78.09615)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sweqm"]
 animations = [{
@@ -172,34 +172,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_wpjfl"]
-offsets = PackedFloat32Array(0.21311475, 0.9918033, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.28627452, 0.28627452, 0.28627452, 0.3882353, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_bi64h"]
-gradient = SubResource("Gradient_wpjfl")
-
-[sub_resource type="Curve" id="Curve_2ijsl"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_p1odr"]
-curve = SubResource("Curve_2ijsl")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0gysh"]
-particle_flag_disable_z = true
-initial_velocity_min = 200.0
-initial_velocity_max = 400.0
-gravity = Vector3(0, 98, 0)
-scale_curve = SubResource("CurveTexture_p1odr")
-color_ramp = SubResource("GradientTexture1D_bi64h")
-
 [node name="Player" type="CharacterBody2D" unique_id=2044835570 groups=["Player"]]
 position = Vector2(-90, -52)
 script = ExtResource("1_cvnsp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=697402134]
-position = Vector2(0, 11.149391)
+position = Vector2(0, 28.5)
 scale = Vector2(1.1052275, 1.2420586)
 shape = SubResource("RectangleShape2D_vgqql")
 
@@ -215,30 +193,35 @@ scale = Vector2(2.4229853, 2.45545)
 texture_filter = 1
 scale = Vector2(5.9175715, 6.701942)
 sprite_frames = SubResource("SpriteFrames_sweqm")
-animation = &"ataque"
-
-[node name="EfeitoAtaque" type="AnimatedSprite2D" parent="." unique_id=254468417]
-texture_filter = 1
-scale = Vector2(3.167188, 2.3375)
-sprite_frames = ExtResource("23_2ijsl")
-animation = &"ataque"
-frame = 7
-frame_progress = 1.0
-
-[node name="EfeitoParticulaAtaque" type="GPUParticles2D" parent="." unique_id=1335113906]
-emitting = false
-amount = 15
-lifetime = 0.3
-one_shot = true
-process_material = SubResource("ParticleProcessMaterial_0gysh")
+animation = &"idle"
 
 [node name="RayPeito" type="RayCast2D" parent="." unique_id=1855373804]
 position = Vector2(42, 14)
 target_position = Vector2(23, 0)
-collision_mask = 3
-collide_with_areas = true
+collision_mask = 5
 
 [node name="RayCabeca" type="RayCast2D" parent="." unique_id=173559539]
-position = Vector2(43, -43)
+position = Vector2(44, -31)
 target_position = Vector2(21, 0)
-collide_with_areas = true
+collision_mask = 5
+
+[node name="RayPlataforma" type="RayCast2D" parent="." unique_id=140518207]
+position = Vector2(1, 19)
+target_position = Vector2(0, 3)
+collision_mask = 4
+hit_from_inside = true
+
+[node name="PivotArma" type="Node2D" parent="." unique_id=1483645359]
+position = Vector2(1, 37)
+
+[node name="SpriteArma" type="Sprite2D" parent="PivotArma" unique_id=1821253037]
+
+[node name="SpriteMao" type="Sprite2D" parent="PivotArma/SpriteArma" unique_id=1617502402]
+texture = ExtResource("29_83xs0")
+
+[node name="AreaHitbox" type="Area2D" parent="PivotArma" unique_id=2079794280]
+position = Vector2(1, -40)
+collision_layer = 0
+collision_mask = 12
+
+[node name="ColisaoHitbox" type="CollisionShape2D" parent="PivotArma/AreaHitbox" unique_id=1715635438]

@@ -15,12 +15,21 @@ public partial class Player : CharacterBody2D
 	public const float ImpactDuration = 0.4f; 
 	public const float WallJumpPushForce = 400.0f; 
 	public const float WallJumpLockDuration = 0.15f; 
-	public const float FallGravityMultiplier = 1.9f; 
+	public const float FallGravityMultiplier = 2.1f; 
+	
+	public const float VelocidadeAndandoAtacando = 0.4f;
+	
+	// ---> NOVO: COOLDOWN DO DASH/ROLL <---
+	public const float DashCooldownDuration = 0.5f;
 
-	// ---> CONFIGURAÇÃO DA QUINA <---
-	[Export] public Vector2 OffsetTeleportQuina = new Vector2(30, -60); 
-	[Export] public float TempoParaDeslizarParede = 0.5f; 
-	private float _tempoEncostadoNaParede = 0.0f; 
+	[ExportGroup("Configurações de Quina e Escalada")]
+	[Export] public float TempoEscalada = 0.20f; 
+	[Export] public bool SubidaSuave = true;
+	[Export] public Vector2 OffsetTeleportQuina = new Vector2(30, -70); 
+	[Export] public float AfastarArmaNaEscalada = 10.0f; 
+	
+	private float _cooldownDescida = 0.0f; 
+	private Vector2 _posicaoAlvoTeleporte; 
 
 	// --- CONTROLE DE ESTADOS ---
 	private bool isSlamming = false; 
@@ -31,24 +40,40 @@ public partial class Player : CharacterBody2D
 	private bool isRolling = false;
 	private bool isDashing = false;
 	private float moveDirection = 1.0f; 
+	private float attackDirection = 1.0f; 
 	private bool canAirDash = false; 
 	private bool canWallInteract = true; 
 	private bool isAttacking = false;
+	private bool isHoldingWall = false; 
 	
 	private bool _inMenu = false;
 	private bool isClimbingLedge = false;
 	private int _jumpCount = 0;
 	private float wallReattachTimer = 0.0f;
 
+	// --- VARIÁVEIS DE TEMPO DE RECARGA E IMPULSO ---
+	private float _impulsoTimer = 0.0f;
+	private Vector2 _impulsoVelocidade = Vector2.Zero;
+	private float _dashCooldownTimer = 0.0f; // ---> NOVO: Cronômetro do cooldown
+
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
-	// --- REFERÊNCIAS VISUAIS ---
+	// --- REFERÊNCIAS VISUAIS E SISTEMA DE ARMAS ---
 	private AnimatedSprite2D anim;
 	private Sprite2D _armaNasCostas;
-	private AnimatedSprite2D _efeitoAtaque; 
+	private Node2D _pivotArma;
+	private Sprite2D _spriteArma;
+	private Sprite2D _spriteMao;
+	private Camera2D _camera;
+	
+	private Vector2 _posicaoBasePivot; 
+	
+	private Area2D _areaHitbox;
+	private CollisionShape2D _colisaoHitbox;
 	
 	private RayCast2D _rayPeito;
 	private RayCast2D _rayCabeca;
+	private RayCast2D _rayPlataforma; 
 
 	[Export] public ItemData ArmaEquipada; 
 
@@ -58,15 +83,28 @@ public partial class Player : CharacterBody2D
 
 		anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_armaNasCostas = GetNodeOrNull<Sprite2D>("ArmaNasCostas");
-		_efeitoAtaque = GetNodeOrNull<AnimatedSprite2D>("EfeitoAtaque");
 		
 		_rayPeito = GetNode<RayCast2D>("RayPeito");
 		_rayCabeca = GetNode<RayCast2D>("RayCabeca");
+		_rayPlataforma = GetNodeOrNull<RayCast2D>("RayPlataforma");
 
-		if (_efeitoAtaque != null)
+		_camera = GetNodeOrNull<Camera2D>("Camera2D");
+
+		_pivotArma = GetNode<Node2D>("PivotArma");
+		_spriteArma = _pivotArma.GetNode<Sprite2D>("SpriteArma");
+		
+		_spriteMao = _spriteArma.GetNodeOrNull<Sprite2D>("SpriteMao");
+
+		_areaHitbox = _pivotArma.GetNodeOrNull<Area2D>("AreaHitbox");
+		_colisaoHitbox = _areaHitbox?.GetNodeOrNull<CollisionShape2D>("ColisaoHitbox");
+		
+		_posicaoBasePivot = _pivotArma.Position; 
+		_pivotArma.Visible = false; 
+
+		if (_areaHitbox != null)
 		{
-			_efeitoAtaque.AnimationFinished += AoTerminarAtaque;
-			_efeitoAtaque.Visible = false; 
+			_areaHitbox.BodyEntered += AoAcertarInimigo;
+			if (_colisaoHitbox != null) _colisaoHitbox.SetDeferred("disabled", true);
 		}
 
 		EquiparArma(ArmaEquipada);
@@ -81,6 +119,8 @@ public partial class Player : CharacterBody2D
 			isRolling = false;
 			isDashing = false;
 			isSlamming = false;
+			isClimbingLedge = false;
+			_impulsoTimer = 0.0f; 
 		}
 	}
 
@@ -98,15 +138,55 @@ public partial class Player : CharacterBody2D
 				_armaNasCostas.Visible = true;
 			}
 			
-			// ---> A MÁGICA DE LER O .TRES AQUI! <---
-			if (_efeitoAtaque != null)
+			if (_spriteArma != null)
 			{
-				_efeitoAtaque.SpriteFrames = ArmaEquipada.AnimacaoAtaque;
-				_efeitoAtaque.Position = ArmaEquipada.PosicaoAtaque;
-				_efeitoAtaque.Scale = ArmaEquipada.EscalaAtaque;
+				_spriteArma.Texture = ArmaEquipada.Icone;
+				_spriteArma.Scale = ArmaEquipada.EscalaNaMao; 
+				_spriteArma.Offset = ArmaEquipada.AjusteDoCabo; 
+			}
+
+			if (_spriteMao != null)
+			{
+				_spriteMao.Scale = ArmaEquipada.MaoEscala;
+				_spriteMao.Position = ArmaEquipada.MaoOffset;
+			}
+
+			if (_colisaoHitbox != null)
+			{
+				RectangleShape2D shape = new RectangleShape2D();
+				shape.Size = ArmaEquipada.TamanhoHitbox;
+				_colisaoHitbox.Shape = shape;
+				_colisaoHitbox.Position = ArmaEquipada.PosicaoHitbox;
 			}
 		}
 		else if (_armaNasCostas != null) _armaNasCostas.Visible = false;
+	}
+
+	private void AtualizarDirecaoRays(float direcao)
+	{
+		if (_rayPeito == null || _rayCabeca == null) return;
+
+		_rayPeito.Position = new Vector2(Mathf.Abs(_rayPeito.Position.X) * direcao, _rayPeito.Position.Y);
+		_rayCabeca.Position = new Vector2(Mathf.Abs(_rayCabeca.Position.X) * direcao, _rayCabeca.Position.Y);
+
+		_rayPeito.TargetPosition = new Vector2(Mathf.Abs(_rayPeito.TargetPosition.X) * direcao, _rayPeito.TargetPosition.Y);
+		_rayCabeca.TargetPosition = new Vector2(Mathf.Abs(_rayCabeca.TargetPosition.X) * direcao, _rayCabeca.TargetPosition.Y);
+	}
+
+	public override void _Process(double delta)
+	{
+		if (_camera != null && !_inMenu)
+		{
+			Vector2 mouseLocal = GetLocalMousePosition();
+			Vector2 offsetAlvo = mouseLocal * 0.20f; 
+			
+			if (offsetAlvo.Length() > 120f) 
+			{
+				offsetAlvo = offsetAlvo.Normalized() * 120f;
+			}
+			
+			_camera.Position = _camera.Position.Lerp(offsetAlvo, 5f * (float)delta);
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -125,15 +205,12 @@ public partial class Player : CharacterBody2D
 
 		if (isClimbingLedge) return;
 
-		if (isAttacking && IsOnFloor())
-		{
-			Velocity = Vector2.Zero;
-			MoveAndSlide();
-			return;
-		}
-
 		Vector2 velocity = Velocity;
 		if (wallJumpTimer > 0) wallJumpTimer -= (float)delta;
+		if (_cooldownDescida > 0) _cooldownDescida -= (float)delta;
+		
+		// ---> NOVO: Reduz o timer do cooldown do dash a cada frame
+		if (_dashCooldownTimer > 0) _dashCooldownTimer -= (float)delta;
 
 		if (!canWallInteract)
 		{
@@ -144,7 +221,6 @@ public partial class Player : CharacterBody2D
 		if (Input.IsActionJustPressed("ataque") && !isAttacking && !isRolling && !isSlamming && ArmaEquipada != null)
 		{
 			IniciarAtaque();
-			return; 
 		}
 
 		if (isImpacting)
@@ -160,7 +236,7 @@ public partial class Player : CharacterBody2D
 		if (isSlamming)
 		{
 			velocity.Y = SlamSpeed; velocity.X = 0; 
-			if (IsOnFloor()) { isSlamming = false; isImpacting = true; impactTimer = ImpactDuration; }
+			if (IsOnFloor()) { isSlamming = false; isImpacting = true; impactTimer = ImpactDuration; _impulsoTimer = 0; }
 			Velocity = velocity; MoveAndSlide(); UpdateAnimation(); return;
 		}
 
@@ -180,54 +256,69 @@ public partial class Player : CharacterBody2D
 		}
 
 		float direction = Input.GetAxis("ui_left", "ui_right");
+		float velocidadeAtual = isAttacking && IsOnFloor() ? Speed * VelocidadeAndandoAtacando : Speed;
+		
 		if (direction != 0 && wallJumpTimer <= 0) 
 		{
-			moveDirection = direction > 0 ? 1.0f : -1.0f;
+			if (!isAttacking) 
+			{
+				moveDirection = direction > 0 ? 1.0f : -1.0f;
+				AtualizarDirecaoRays(moveDirection); 
+			}
 			
-			float tamanhoRaio = Mathf.Abs(_rayPeito.TargetPosition.X);
-			_rayPeito.TargetPosition = new Vector2(tamanhoRaio * moveDirection, _rayPeito.TargetPosition.Y);
-			_rayCabeca.TargetPosition = new Vector2(tamanhoRaio * moveDirection, _rayCabeca.TargetPosition.Y);
+			velocity.X = direction * velocidadeAtual; 
 		}
 		else if (wallJumpTimer <= 0) 
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, velocidadeAtual);
 		}
 
 		if (!IsOnFloor() && Input.IsActionPressed("ui_down") && Input.IsActionJustPressed("ui_up")) isSlamming = true;
-		if (Input.IsActionJustPressed("dash") && !isSlamming)
+		
+		// ---> MODIFICADO: Verifica se o cooldown permite rolar/dash
+		if (Input.IsActionJustPressed("dash") && !isSlamming && !isAttacking && _dashCooldownTimer <= 0) 
 		{
-			if (IsOnFloor()) { isRolling = true; actionTimer = ActionDuration; }
-			else if (canAirDash) { isDashing = true; canAirDash = false; actionTimer = ActionDuration; }
+			if (IsOnFloor()) { isRolling = true; actionTimer = ActionDuration; _dashCooldownTimer = DashCooldownDuration; }
+			else if (canAirDash) { isDashing = true; canAirDash = false; actionTimer = ActionDuration; _dashCooldownTimer = DashCooldownDuration; }
+		}
+
+		isHoldingWall = false;
+		if (!IsOnFloor() && IsOnWall() && canWallInteract)
+		{
+			Vector2 wallNormal = GetWallNormal();
+			if ((wallNormal.X < 0 && direction > 0) || (wallNormal.X > 0 && direction < 0))
+			{
+				isHoldingWall = true;
+			}
 		}
 
 		if (!IsOnFloor())
 		{
 			float appliedGravity = velocity.Y > 0 ? gravity * FallGravityMultiplier : gravity;
 			
-			if (IsOnWall() && canWallInteract && direction != 0) 
+			if (isHoldingWall && !Input.IsActionPressed("ui_down") && !isAttacking) 
 			{
-				_tempoEncostadoNaParede += (float)delta; 
-				if (_tempoEncostadoNaParede >= TempoParaDeslizarParede && velocity.Y > 0)
+				if (velocity.Y > 0)
 					velocity.Y = Mathf.MoveToward(velocity.Y, WallSlideSpeed, appliedGravity * (float)delta);
 				else
 					velocity.Y += appliedGravity * (float)delta;
 			}
 			else
 			{
-				_tempoEncostadoNaParede = 0.0f;
-				velocity.Y += appliedGravity * (float)delta;
+				velocity.Y += appliedGravity * (float)delta; 
 			}
 		}
 		else 
 		{ 
-			canAirDash = false; canWallInteract = true; _jumpCount = 0; wallReattachTimer = 0.0f; _tempoEncostadoNaParede = 0.0f; 
+			canAirDash = false; canWallInteract = true; _jumpCount = 0; wallReattachTimer = 0.0f; 
 		}
 
-		if (Input.IsActionJustPressed("ui_up"))
+		if (Input.IsActionJustPressed("ui_up") && !isAttacking)
 		{
 			if (Input.IsActionPressed("ui_down") && IsOnFloor())
 			{
 				Position = new Vector2(Position.X, Position.Y + 2);
+				_cooldownDescida = 0.4f; 
 			}
 			else if (IsOnFloor()) 
 			{ 
@@ -239,7 +330,7 @@ public partial class Player : CharacterBody2D
 				velocity.Y = JumpVelocity; velocity.X = wallNormal.X * WallJumpPushForce; 
 				moveDirection = wallNormal.X; wallJumpTimer = WallJumpLockDuration; 
 				canAirDash = true; canWallInteract = false; wallReattachTimer = 1.5f;
-				_tempoEncostadoNaParede = 0.0f; _jumpCount = 1; 
+				_jumpCount = 1; 
 			}
 			else if (_jumpCount < 2 && !Input.IsActionPressed("ui_down")) 
 			{ 
@@ -247,20 +338,39 @@ public partial class Player : CharacterBody2D
 			}
 		}
 
-		if (wallJumpTimer <= 0 && direction != 0) velocity.X = direction * Speed;
+		if (_impulsoTimer > 0)
+		{
+			_impulsoTimer -= (float)delta;
+			velocity = _impulsoVelocidade;
+		}
 
-		// ==========================================================
-		// ---> DETECÇÃO DA QUINA
-		// ==========================================================
-		if (!IsOnFloor() && velocity.Y >= 0) 
+		if (!IsOnFloor() && velocity.Y >= 0 && !Input.IsActionPressed("ui_down") && _cooldownDescida <= 0) 
 		{
 			_rayPeito.ForceRaycastUpdate();
 			_rayCabeca.ForceRaycastUpdate();
 
 			if (_rayPeito.IsColliding() && !_rayCabeca.IsColliding())
 			{
-				IniciarEscaladaQuina();
-				return; 
+				Node collider = (Node)_rayPeito.GetCollider();
+				if (!(collider is Area2D) && !collider.IsInGroup("Player"))
+				{
+					TentarEscalada(collider, false);
+					return; 
+				}
+			}
+
+			if (_rayPlataforma != null)
+			{
+				_rayPlataforma.ForceRaycastUpdate();
+				if (_rayPlataforma.IsColliding())
+				{
+					Node colisor = (Node)_rayPlataforma.GetCollider();
+					if (colisor != null && colisor.Name.ToString().ToLower().Contains("plataforma"))
+					{
+						TentarEscalada(colisor, true);
+						return;
+					}
+				}
 			}
 		}
 
@@ -269,60 +379,83 @@ public partial class Player : CharacterBody2D
 		UpdateAnimation();
 	}
 
-	private void IniciarEscaladaQuina()
-	{
-		isClimbingLedge = true;
-		Velocity = Vector2.Zero; 
-		
-		if (anim.SpriteFrames.HasAnimation("escalar_quina")) anim.Play("escalar_quina");
-		
-		GetTree().CreateTimer(0.4f).Timeout += TerminarEscaladaQuina; 
-	}
-
-	private void TerminarEscaladaQuina()
-	{
-		if (!isClimbingLedge) return;
-
-		Vector2 teleportPos = GlobalPosition;
-		
-		teleportPos.X += OffsetTeleportQuina.X * moveDirection; 
-		teleportPos.Y += OffsetTeleportQuina.Y; 
-		
-		GlobalPosition = teleportPos;
-		isClimbingLedge = false; 
-		
-		Velocity = new Vector2(0, 10);
-		
-		anim.Play("idle");
-	}
-
-	// ==========================================================
-	// ---> MÁGICA DO ATAQUE (PUXANDO DO ARQUIVO .TRES) <---
-	// ==========================================================
 	private void IniciarAtaque()
 	{
 		isAttacking = true;
 		if (_armaNasCostas != null) _armaNasCostas.Visible = false;
+		_pivotArma.Visible = true;
+
+		if (_colisaoHitbox != null) _colisaoHitbox.SetDeferred("disabled", false);
+
+		Vector2 mouseGlobal = GetGlobalMousePosition();
+		Vector2 direcaoMouse = (mouseGlobal - GlobalPosition).Normalized();
 		
-		// Verifica se o SpriteFrames que veio do .tres não é nulo
-		if (_efeitoAtaque != null && _efeitoAtaque.SpriteFrames != null)
+		attackDirection = direcaoMouse.X > 0 ? 1.0f : -1.0f;
+
+		AtualizarDirecaoRays(attackDirection);
+
+		_pivotArma.Position = new Vector2(Mathf.Abs(_posicaoBasePivot.X) * attackDirection, _posicaoBasePivot.Y);
+		
+		_spriteArma.FlipV = false; 
+		_spriteArma.FlipH = attackDirection < 0; 
+		_spriteArma.RotationDegrees = ArmaEquipada.RotacaoSpriteBaseGraus; 
+		
+		if (_spriteMao != null)
 		{
-			_efeitoAtaque.Visible = true;
-			_efeitoAtaque.Frame = 0; 
-			
-			// Tenta tocar a animação "ataque" se você nomeou assim. Se não, toca a primeira que achar!
-			if (_efeitoAtaque.SpriteFrames.HasAnimation("ataque"))
-				_efeitoAtaque.Play("ataque");
-			else if (_efeitoAtaque.SpriteFrames.GetAnimationNames().Length > 0)
-				_efeitoAtaque.Play(_efeitoAtaque.SpriteFrames.GetAnimationNames()[0]);
-		}
-		else
-		{
-			// Se o arquivo .tres estiver sem a animação configurada, solta o boneco rápido
-			GetTree().CreateTimer(0.3f).Timeout += AoTerminarAtaque;
+			_spriteMao.FlipV = false;
+			_spriteMao.FlipH = attackDirection < 0;
 		}
 
-		// Se o corpo do player tiver a animação de ataque, toca! Senão, fica idle.
+		anim.FlipH = attackDirection < 0; 
+
+		float anguloBase = 0f;
+
+		if (ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.MeleeDirecional || ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.Estocada)
+			anguloBase = attackDirection > 0 ? 0f : Mathf.Pi;
+		else
+			anguloBase = direcaoMouse.Angle();
+
+		if (ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.Estocada || ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.EstocadaLivre)
+		{
+			_impulsoTimer = ArmaEquipada.TempoAtaque * 0.5f; 
+			if (ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.Estocada)
+			{
+				_impulsoVelocidade = new Vector2(attackDirection * ArmaEquipada.ForcaImpulsoEstocada, 0); 
+			}
+			else
+			{
+				_impulsoVelocidade = direcaoMouse * ArmaEquipada.ForcaImpulsoEstocada; 
+			}
+		}
+
+		Tween tween = CreateTween();
+
+		if (ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.MeleeDirecional || ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.MeleeLivre)
+		{
+			float anguloInicio = Mathf.DegToRad(ArmaEquipada.AnguloInicioCorteGraus);
+			float anguloFim = Mathf.DegToRad(ArmaEquipada.AnguloFimCorteGraus);
+			
+			float inicioReal = anguloBase + (anguloInicio * attackDirection);
+			float fimReal = anguloBase + (anguloFim * attackDirection);
+			
+			_pivotArma.Rotation = inicioReal; 
+			
+			tween.TweenProperty(_pivotArma, "rotation", fimReal, ArmaEquipada.TempoAtaque)
+				 .SetTrans(Tween.TransitionType.Sine)
+				 .SetEase(Tween.EaseType.InOut);
+		}
+		else if (ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.Estocada || ArmaEquipada.EstiloAtaque == ItemData.TipoAtaque.EstocadaLivre)
+		{
+			_pivotArma.Rotation = anguloBase;
+			_spriteArma.Position = Vector2.Zero; 
+			
+			float metadeTempo = ArmaEquipada.TempoAtaque / 2;
+			tween.TweenProperty(_spriteArma, "position", new Vector2(ArmaEquipada.DistanciaEstocada, 0), metadeTempo);
+			tween.TweenProperty(_spriteArma, "position", Vector2.Zero, metadeTempo);
+		}
+
+		tween.Finished += AoTerminarAtaque;
+
 		if (anim.SpriteFrames.HasAnimation("ataque")) anim.Play("ataque");
 		else anim.Play("idle"); 
 	}
@@ -330,30 +463,138 @@ public partial class Player : CharacterBody2D
 	private void AoTerminarAtaque()
 	{
 		isAttacking = false;
-		if (_efeitoAtaque != null) _efeitoAtaque.Visible = false;
+		_pivotArma.Visible = false; 
+		_spriteArma.Position = Vector2.Zero; 
+		_impulsoTimer = 0.0f; 
+
+		if (_colisaoHitbox != null) _colisaoHitbox.SetDeferred("disabled", true);
+
 		if (_armaNasCostas != null && ArmaEquipada != null) _armaNasCostas.Visible = true;
+		
+		AtualizarDirecaoRays(moveDirection);
+	}
+
+	private void AoAcertarInimigo(Node2D body)
+	{
+		if (body.IsInGroup("Inimigo"))
+		{
+			GD.Print("VRAU! Espadada acertou o: " + body.Name);
+		}
+	}
+
+	private void TentarEscalada(Node objetoAtingido, bool isPlataforma)
+	{
+		isClimbingLedge = true;
+		Velocity = Vector2.Zero; 
+		_impulsoTimer = 0.0f; 
+		
+		_posicaoAlvoTeleporte = GlobalPosition;
+
+		float direcaoEscalada = isAttacking ? attackDirection : moveDirection;
+
+		if (_armaNasCostas != null && ArmaEquipada != null)
+		{
+			Vector2 pos = ArmaEquipada.PosicaoGuardada;
+			
+			if (direcaoEscalada < 0)
+			{
+				_armaNasCostas.Position = new Vector2(-pos.X - AfastarArmaNaEscalada, pos.Y);
+				_armaNasCostas.RotationDegrees = -ArmaEquipada.RotacaoGuardada; 
+				_armaNasCostas.FlipH = true; 
+			}
+			else
+			{
+				_armaNasCostas.Position = new Vector2(pos.X + AfastarArmaNaEscalada, pos.Y);
+				_armaNasCostas.RotationDegrees = ArmaEquipada.RotacaoGuardada;
+				_armaNasCostas.FlipH = false;
+			}
+			
+			_armaNasCostas.Visible = true; 
+			if (isAttacking) _pivotArma.Visible = false;
+		}
+
+		if (isPlataforma)
+		{
+			_posicaoAlvoTeleporte.Y += OffsetTeleportQuina.Y; 
+		}
+		else
+		{
+			bool marcadorEncontrado = false;
+			if (objetoAtingido != null)
+			{
+				Node noEncontrado = objetoAtingido.FindChild("PontoQuina", true, false);
+				
+				if (noEncontrado != null && noEncontrado is Marker2D ponto)
+				{
+					_posicaoAlvoTeleporte = ponto.GlobalPosition;
+					marcadorEncontrado = true;
+				}
+			}
+
+			if (!marcadorEncontrado)
+			{
+				_posicaoAlvoTeleporte.X += OffsetTeleportQuina.X * direcaoEscalada;
+				_posicaoAlvoTeleporte.Y += OffsetTeleportQuina.Y;
+			}
+		}
+
+		if (anim.SpriteFrames.HasAnimation("escalar_quina")) anim.Play("escalar_quina");
+		
+		if (SubidaSuave)
+		{
+			Tween tween = CreateTween();
+			tween.TweenProperty(this, "global_position", _posicaoAlvoTeleporte, TempoEscalada);
+			tween.Finished += FinalizarEscalada;
+		}
+		else
+		{
+			GetTree().CreateTimer(TempoEscalada).Timeout += FinalizarEscalada; 
+		}
+	}
+
+	private void FinalizarEscalada()
+	{
+		if (!isClimbingLedge) return;
+
+		GlobalPosition = _posicaoAlvoTeleporte;
+		
+		isClimbingLedge = false; 
+		Velocity = new Vector2(0, 10); 
+		anim.Play("idle");
+		
+		if (isAttacking) AoTerminarAtaque();
 	}
 
 	private void UpdateAnimation()
 	{
 		if (isAttacking || isClimbingLedge) return; 
 
-		if (moveDirection < 0) 
+		anim.FlipH = moveDirection < 0;
+
+		if (_pivotArma != null)
 		{
-			anim.FlipH = true;
-			if (ArmaEquipada != null)
-			{
-				if (_armaNasCostas != null) _armaNasCostas.Scale = new Vector2(-Mathf.Abs(ArmaEquipada.EscalaGuardada.X), ArmaEquipada.EscalaGuardada.Y);
-				if (_efeitoAtaque != null) _efeitoAtaque.Scale = new Vector2(-Mathf.Abs(ArmaEquipada.EscalaAtaque.X), ArmaEquipada.EscalaAtaque.Y);
-			}
+			_pivotArma.Position = new Vector2(Mathf.Abs(_posicaoBasePivot.X) * (moveDirection > 0 ? 1 : -1), _posicaoBasePivot.Y);
 		}
-		else if (moveDirection > 0) 
+
+		if (ArmaEquipada != null && _armaNasCostas != null)
 		{
-			anim.FlipH = false;
-			if (ArmaEquipada != null)
+			Vector2 posicaoGuardaAtual = ArmaEquipada.PosicaoGuardada;
+			
+			if (isRolling) posicaoGuardaAtual.Y += ArmaEquipada.DescerArmaAoDeslizar;
+
+			if (moveDirection < 0) 
 			{
-				if (_armaNasCostas != null) _armaNasCostas.Scale = new Vector2(Mathf.Abs(ArmaEquipada.EscalaGuardada.X), ArmaEquipada.EscalaGuardada.Y);
-				if (_efeitoAtaque != null) _efeitoAtaque.Scale = new Vector2(Mathf.Abs(ArmaEquipada.EscalaAtaque.X), ArmaEquipada.EscalaAtaque.Y);
+				_armaNasCostas.Position = new Vector2(-posicaoGuardaAtual.X, posicaoGuardaAtual.Y);
+				_armaNasCostas.RotationDegrees = -ArmaEquipada.RotacaoGuardada; 
+				_armaNasCostas.FlipH = true; 
+				_armaNasCostas.Scale = ArmaEquipada.EscalaGuardada; 
+			}
+			else 
+			{
+				_armaNasCostas.Position = posicaoGuardaAtual;
+				_armaNasCostas.RotationDegrees = ArmaEquipada.RotacaoGuardada;
+				_armaNasCostas.FlipH = false;
+				_armaNasCostas.Scale = ArmaEquipada.EscalaGuardada;
 			}
 		}
 
@@ -363,8 +604,7 @@ public partial class Player : CharacterBody2D
 		else if (isDashing) anim.Play("dash");
 		else if (!IsOnFloor())
 		{
-			if (IsOnWall() && canWallInteract && Velocity.Y > 0 && _tempoEncostadoNaParede >= TempoParaDeslizarParede) 
-				anim.Play("wall");
+			if (isHoldingWall && Velocity.Y > 0) anim.Play("wall");
 			else if (Velocity.Y < 0) anim.Play("jump");
 			else anim.Play("fall"); 
 		}

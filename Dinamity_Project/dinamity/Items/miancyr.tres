@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://descug0k2b1i7"]
+
+[ext_resource type="Script" uid="uid://cwitc0i63r276" path="res://Scripts/ItemData.cs" id="1_3om6g"]
+[ext_resource type="Texture2D" uid="uid://cx17phys42j6v" path="res://Sprites/weapon/Miniancyr.png" id="1_i3hfc"]
+
+[resource]
+script = ExtResource("1_3om6g")
+Nome = "Miancyr"
+Icone = ExtResource("1_i3hfc")
+PosicaoGuardada = Vector2(-20, 20)
+RotacaoGuardada = 135.0
+EscalaGuardada = Vector2(6, 6)
+TempoAtaque = 0.4
+EscalaNaMao = Vector2(7, 7)
+AnguloInicioCorteGraus = -110.0
+AnguloFimCorteGraus = 15.0
+TamanhoHitbox = Vector2(250, 40)
+PosicaoHitbox = Vector2(140, 40)
+MaoEscala = Vector2(1.4, 1.4)
+metadata/_custom_type_script = "uid://cwitc0i63r276"
