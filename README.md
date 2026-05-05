@@ -1,4 +1,4 @@
-# 🗡️ Projeto Dimanity
+#  Projeto Dimanity
 
 Bem-vindo ao repositório de apresentação do **Dimanity**, um jogo de plataforma e ação 2D focado em combate preciso e mecânicas responsivas, desenvolvido na **Godot Engine 4** utilizando **C#**.
 
@@ -6,15 +6,7 @@ Atualmente em desenvolvimento ativo, o projeto busca entregar um "game feel" pol
 
 ---
 
-## 📸 Galeria
-
-*(Arraste e solte suas imagens ou GIFs aqui no editor do GitHub, ou use os links das imagens abaixo)*
-
-![Menu Principal do Jogo](link_da_sua_imagem_aqui)
-> *Legenda opcional para a imagem, ex: Protagonista empunhando sua espada.*
-
-![Demonstração de Combate](link_da_sua_imagem_aqui)
-> *Legenda opcional para a imagem, ex: Sistema de combate e repulsão suave em ação.*
+<img width="2730" height="1536" alt="Promo2" src="https://github.com/user-attachments/assets/07d8a919-2371-4545-baf4-d7e57a6b58ce" />
 
 ---
 
