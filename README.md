@@ -38,7 +38,8 @@ O projeto foi construído priorizando a performance e a organização do código
 *   **Linguagem principal:** C# (.NET)
 *   **Física:** Godot Physics 2D (Modificada com vetores e RayCasts customizados para maior precisão em jogos de plataforma).
 
----
+<img width="2390" height="1792" alt="promo1" src="https://github.com/user-attachments/assets/7f4055f8-982a-490c-be6f-85debe36e24c" />
+
 
 ## 🚀 Status do Projeto e Download
 
