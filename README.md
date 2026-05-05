@@ -1,64 +1,58 @@
 # 🗡️ Projeto Dimanity
 
-Bem-vindo ao repositório oficial do **Dimanity**, um jogo de plataforma e ação 2D focado em combate preciso e mecânicas responsivas, desenvolvido na **Godot Engine 4** utilizando **C#**.
+Bem-vindo ao repositório de apresentação do **Dimanity**, um jogo de plataforma e ação 2D focado em combate preciso e mecânicas responsivas, desenvolvido na **Godot Engine 4** utilizando **C#**.
 
-Este projeto está em desenvolvimento ativo e possui foco em entregar um "game feel" polido, inspirado em clássicos modernos do gênero *Metroidvania* e *Action-Platformer*.
+Atualmente em desenvolvimento ativo, o projeto busca entregar um "game feel" polido, inspirado em clássicos modernos do gênero *Metroidvania* e *Action-Platformer*.
+
+---
+
+## 📸 Galeria
+
+*(Arraste e solte suas imagens ou GIFs aqui no editor do GitHub, ou use os links das imagens abaixo)*
+
+![Menu Principal do Jogo](link_da_sua_imagem_aqui)
+> *Legenda opcional para a imagem, ex: Protagonista empunhando sua espada.*
+
+![Demonstração de Combate](link_da_sua_imagem_aqui)
+> *Legenda opcional para a imagem, ex: Sistema de combate e repulsão suave em ação.*
 
 ---
 
 ## 🎮 Sobre o Jogo
 
-Em **Dimanity**, você controla um guerreiro ágil capaz de dominar o cenário e engajar em combates viscerais. O jogo conta com um sistema de física avançado que permite grande controle aéreo, esquivas (dash/roll) e um sistema de armas modular e expansível.
+Em **Dimanity**, você controla um guerreiro ágil capaz de dominar o cenário e engajar em combates viscerais. O jogo conta com um sistema de física avançado que permite grande controle aéreo, esquivas e um sistema de armas modular.
 
 ### ✨ Características Principais
 
-*   **Combate Responsivo:** Hitboxes geradas e processadas com precisão em C#. Diferentes tipos de armas (direcionais, estocadas livres) configuráveis via script.
+*   **Combate Responsivo:** Hitboxes geradas e processadas com precisão em C#. Diferentes tipos de armas (ataques direcionais, estocadas) configuráveis dinamicamente.
 *   **Movimentação Avançada:**
     *   Pulo Duplo e Pulo de Parede (Wall Jump).
     *   Deslizar em Paredes (Wall Slide).
-    *   Dash aéreo e Rolamento no chão (Roll) com i-frames/cooldowns independentes.
+    *   Dash aéreo e Rolamento no chão (Roll) com cooldowns independentes.
     *   Ataque descendente (Slam Attack) para finalizações e movimentação rápida.
     *   Escalada automática de quinas (Ledge Climb) com interpolação suave.
-*   **"Soft Collision" (Repulsão Suave):** Sistema de colisão inspirado em *Hollow Knight* e *Dead Cells*. Inimigos possuem uma massa física que repele o jogador suavemente, impedindo a "Síndrome do T-Rex" sem travar o movimento do jogador (permite atravessar inimigos escorregando pela hitbox deles).
-*   **Sistemas Modulares:**
-    *   **Criador de Armas (`ItemData.cs`):** Arquitetura baseada em `Resource` que permite criar novas espadas e equipamentos rapidamente apenas ajustando parâmetros no Inspector (Tamanho da Hitbox, Ângulos de Corte, Velocidade de Ataque).
-    *   **Inimigos Independentes (`Enemy.cs`):** IA estruturada em Máquina de Estados (State Machine) configurável. Cada monstro pode ter sua visão 360º, raycasts de ataque customizados e lógica de patrulha ajustada diretamente pela interface do Editor.
+*   **"Soft Collision" (Repulsão Suave):** Sistema de colisão inspirado em *Hollow Knight* e *Dead Cells*. Inimigos possuem uma massa física que repele o jogador suavemente, impedindo travamentos e permitindo uma fluidez maior nos combates corpo a corpo.
+*   **Sistemas Modulares (Desenvolvimento):**
+    *   **Criador de Armas:** Arquitetura baseada em `Resource` que permite criar novas espadas e equipamentos rapidamente apenas ajustando parâmetros (Tamanho da Hitbox, Ângulos de Corte, Velocidade).
+    *   **IA de Inimigos:** Inteligência Artificial estruturada em Máquina de Estados (State Machine). Cada monstro possui visão adaptável, raycasts de ataque customizados e lógica de patrulha ajustada diretamente pela interface.
 
 ---
 
 ## 🛠️ Tecnologias e Arquitetura
 
-O projeto foi construído priorizando a performance e a organização de código (Clean Code):
+O projeto foi construído priorizando a performance e a organização do código (Clean Code), servindo também como um laboratório de sistemas de jogos complexos:
 
 *   **Engine:** Godot Engine 4.x
-*   **Linguagem:** C# (.NET)
-*   **Física:** Godot Physics 2D (Modificada com vetores e RayCasts customizados).
-*   **Arquitetura:** Componentização de comportamentos, herança e uso intenso de `ExportGroups` para facilitar o Level Design diretamente no Editor, sem necessidade de hardcoding.
+*   **Linguagem principal:** C# (.NET)
+*   **Física:** Godot Physics 2D (Modificada com vetores e RayCasts customizados para maior precisão em jogos de plataforma).
 
 ---
 
-## 📁 Estrutura do Código (Destaques)
+## 🚀 Status do Projeto e Download
 
-*   **`Player.cs`:** O núcleo de movimentação e status do protagonista. Controla o processamento da física, animações, sistema de quinas e troca/leitura das armas equipadas.
-*   **`ItemData.cs`:** Classe Global (`[GlobalClass]`) de Resource. O cérebro por trás de todo item equipado. Define desde a textura até os vetores exatos da área de corte de uma arma.
-*   **`Enemy.cs`:** Classe base para inimigos. Possui sistema de patrulha autônoma, detecção de parede (via RayCast), sistema de gravidade e knockback de dano, além da IA de perseguição e ataque.
+O jogo atualmente é de **código fechado** e está em fase de produção. 
 
----
-
-## 🚀 Como Executar o Projeto
-
-### Pré-requisitos
-*   **Godot Engine 4 com suporte a .NET (C#)** instalado.
-*   SDK do .NET Core atualizado.
-
-### Passos
-1.  Clone este repositório:
-    ```bash
-    git clone [https://github.com/SEU_USUARIO/dimanity.git](https://github.com/SEU_USUARIO/dimanity.git)
-    ```
-2.  Abra o Godot Engine, clique em **Import** e selecione o arquivo `project.godot` na pasta do repositório.
-3.  No topo do editor, clique em **Build** (ou `Ctrl+B`) para compilar os scripts C# do projeto.
-4.  Abra a cena principal e clique em **Play** (F5).
+Uma versão jogável (Build) estará disponível para download no futuro para testes e feedback. Fique de olho neste repositório para atualizações e links de download das futuras versões Alpha/Beta!
 
 ---
 
@@ -67,15 +61,11 @@ O projeto foi construído priorizando a performance e a organização de código
 - [x] Movimentação Básica (Pulo, Movimento, Dash).
 - [x] Interação com Cenário (Wall Jump, Ledge Climb).
 - [x] Sistema Modular de Armas (`Resource` baseado).
-- [x] Criação da IA Base do Inimigo (Patrulha, Visão, Soft Collision).
+- [x] Criação da IA Base dos Inimigos (Patrulha, Visão, Soft Collision).
 - [ ] Implementação de Sistema de UI e Vida (Health Bar).
 - [ ] Criação de Diferentes Classes de Inimigos (Voadores, Atiradores).
 - [ ] Sistema de Inventário.
 
 ---
 
-## 📄 Licença
-
-Este projeto é de código aberto. Sinta-se livre para usar as lógicas de movimentação e C# como estudo ou base para seus próprios jogos na Godot 4!
-
-*Desenvolvido com ☕ e Godot.*
+*© 2026 Dimanity. Todos os direitos reservados.*
